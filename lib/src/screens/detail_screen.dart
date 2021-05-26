@@ -62,195 +62,379 @@ class _DetailScreenState extends State<DetailScreen> {
                 child: Text("Has error in this request :c"),
               );
             } else if (snapshot.connectionState == ConnectionState.done) {
-              return Scaffold(
-                backgroundColor: Colors.black,
-                body: Stack(children: [
-                  Opacity(
-                    opacity: .20,
-                    child: Container(
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: NetworkImage(
-                                  'https://image.tmdb.org/t/p/w500/${movie['posterpath']}'),
-                              fit: BoxFit.fill)),
+              if (snapshot.data.length > 0) {
+                return Scaffold(
+                  backgroundColor: Colors.black,
+                  body: Stack(children: [
+                    Opacity(
+                      opacity: .20,
+                      child: Container(
+                        decoration: BoxDecoration(
+                            image: DecorationImage(
+                                image: NetworkImage(
+                                    'https://image.tmdb.org/t/p/w500/${movie['posterpath']}'),
+                                fit: BoxFit.fill)),
+                      ),
                     ),
-                  ),
-                  BackdropFilter(
-                    filter: ui.ImageFilter.blur(sigmaX: 50.0, sigmaY: 50.0),
-                  ),
-                  SingleChildScrollView(
-                    child: Container(
-                      margin: const EdgeInsets.all(20.0),
-                      child: Column(
-                        children: [
-                          Container(
-                            alignment: Alignment.center,
-                            child: Container(
-                              width: MediaQuery.of(context).size.width,
-                              child: YoutubePlayer(
-                                controller: YoutubePlayerController(
-                                  initialVideoId: snapshot.data[0].source,
-                                  flags: YoutubePlayerFlags(
-                                    autoPlay: false,
-                                    mute: false,
+                    BackdropFilter(
+                      filter: ui.ImageFilter.blur(sigmaX: 50.0, sigmaY: 50.0),
+                    ),
+                    SingleChildScrollView(
+                      child: Container(
+                        margin: const EdgeInsets.all(20.0),
+                        child: Column(
+                          children: [
+                            Container(
+                              alignment: Alignment.center,
+                              child: Container(
+                                width: MediaQuery.of(context).size.width,
+                                child: YoutubePlayer(
+                                  controller: YoutubePlayerController(
+                                    initialVideoId: snapshot.data[0].source,
+                                    flags: YoutubePlayerFlags(
+                                      autoPlay: false,
+                                      mute: false,
+                                    ),
                                   ),
+                                  liveUIColor: Colors.amber,
                                 ),
-                                liveUIColor: Colors.amber,
                               ),
                             ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.symmetric(
-                                vertical: 20.0, horizontal: 50.0),
-                            child: Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    Expanded(
-                                        child: Text(
-                                      movie['title'],
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 30.0,
-                                          fontFamily: ''),
-                                    )),
-                                    Text(
-                                      '${movie['vote_average']}/10',
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 20.0,
-                                          fontFamily: ''),
-                                    ),
-                                    SizedBox(
-                                      width: 15,
-                                    ),
-                                    FutureBuilder(
-                                        future: _database.isLiked(movie['id'],
-                                            "17030696@itcelaya.edu.mx"),
-                                        builder: (BuildContext context,
-                                            AsyncSnapshot<int> snapshot) {
-                                          if (snapshot.data == 0) {
-                                            return FloatingActionButton(
-                                                backgroundColor: Colors.red,
-                                                child: Icon(MdiIcons.heart
-                                                    //MdiIcons.heartBroken,
-                                                    ),
-                                                onPressed: () {
-                                                  Liked obj = Liked();
-                                                  obj.idMovie = movie['id'];
-                                                  obj.mailusr =
-                                                      "17030696@itcelaya.edu.mx";
-                                                  _database.insert('tbl_liked',
-                                                      obj.toJson());
-                                                  setState(() {});
-                                                });
-                                          } else {
-                                            return FloatingActionButton(
-                                                backgroundColor: Colors.red,
-                                                child: Icon(
-                                                  //MdiIcons.heart
-                                                  MdiIcons.heartBroken,
-                                                ),
-                                                onPressed: () {
-                                                  _database.deleteLiked(
-                                                      'tbl_liked',
-                                                      "17030696@itcelaya.edu.mx",
-                                                      movie['id']);
-                                                  setState(() {});
-                                                });
-                                          }
-                                        }),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    SizedBox(
-                                      height: 30,
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Text(
-                                      'Description',
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 25.0,
-                                          fontFamily: ''),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Flexible(
-                                      child: Text(
-                                        movie['overview'],
+                            Container(
+                              margin: EdgeInsets.symmetric(
+                                  vertical: 20.0, horizontal: 50.0),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                          child: Text(
+                                        movie['title'],
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 30.0,
+                                            fontFamily: ''),
+                                      )),
+                                      Text(
+                                        '${movie['vote_average']}/10',
                                         style: TextStyle(
                                             color: Colors.white,
                                             fontSize: 20.0,
                                             fontFamily: ''),
                                       ),
-                                    )
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    SizedBox(
-                                      height: 30,
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Text(
-                                      'Cast',
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 25.0,
-                                          fontFamily: ''),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: SizedBox(
-                                        height: 200.0,
-                                        child: FutureBuilder(
-                                          future: apiCast.getCast(urlc),
-                                          builder: (BuildContext context,
-                                              AsyncSnapshot<List<Cast>>
-                                                  snapshot) {
-                                            if (snapshot.hasError) {
-                                              return Center(
-                                                child: Text(
-                                                    "Has error in this request :c"),
-                                              );
-                                            } else if (snapshot
-                                                    .connectionState ==
-                                                ConnectionState.done) {
-                                              return _listCast(snapshot.data);
-                                            } else {
-                                              return Center(
-                                                child:
-                                                    CircularProgressIndicator(),
-                                              );
-                                            }
-                                          },
-                                        ),
+                                      SizedBox(
+                                        width: 15,
                                       ),
-                                    )
-                                  ],
-                                ),
-                              ],
-                            ),
-                          )
-                        ],
+                                      FutureBuilder(
+                                          future: _database.isLiked(movie['id'],
+                                              "17030696@itcelaya.edu.mx"),
+                                          builder: (BuildContext context,
+                                              AsyncSnapshot<int> snapshot) {
+                                            if (snapshot.data == 0) {
+                                              return FloatingActionButton(
+                                                  backgroundColor: Colors.red,
+                                                  child: Icon(MdiIcons.heart
+                                                      //MdiIcons.heartBroken,
+                                                      ),
+                                                  onPressed: () {
+                                                    Liked obj = Liked();
+                                                    obj.idMovie = movie['id'];
+                                                    obj.mailusr =
+                                                        "17030696@itcelaya.edu.mx";
+                                                    _database.insert(
+                                                        'tbl_liked',
+                                                        obj.toJson());
+                                                    setState(() {});
+                                                  });
+                                            } else {
+                                              return FloatingActionButton(
+                                                  backgroundColor: Colors.red,
+                                                  child: Icon(
+                                                    //MdiIcons.heart
+                                                    MdiIcons.heartBroken,
+                                                  ),
+                                                  onPressed: () {
+                                                    _database.deleteLiked(
+                                                        'tbl_liked',
+                                                        "17030696@itcelaya.edu.mx",
+                                                        movie['id']);
+                                                    setState(() {});
+                                                  });
+                                            }
+                                          }),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      SizedBox(
+                                        height: 30,
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        'Description',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 25.0,
+                                            fontFamily: ''),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Flexible(
+                                        child: Text(
+                                          movie['overview'],
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20.0,
+                                              fontFamily: ''),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      SizedBox(
+                                        height: 30,
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        'Cast',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 25.0,
+                                            fontFamily: ''),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: SizedBox(
+                                          height: 200.0,
+                                          child: FutureBuilder(
+                                            future: apiCast.getCast(urlc),
+                                            builder: (BuildContext context,
+                                                AsyncSnapshot<List<Cast>>
+                                                    snapshot) {
+                                              if (snapshot.hasError) {
+                                                return Center(
+                                                  child: Text(
+                                                      "Has error in this request :c"),
+                                                );
+                                              } else if (snapshot
+                                                      .connectionState ==
+                                                  ConnectionState.done) {
+                                                return _listCast(snapshot.data);
+                                              } else {
+                                                return Center(
+                                                  child:
+                                                      CircularProgressIndicator(),
+                                                );
+                                              }
+                                            },
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    )
+                  ]),
+                );
+              } else {
+                return Scaffold(
+                  backgroundColor: Colors.black,
+                  body: Stack(children: [
+                    Opacity(
+                      opacity: .20,
+                      child: Container(
+                        decoration: BoxDecoration(
+                            image: DecorationImage(
+                                image: NetworkImage(
+                                    'https://image.tmdb.org/t/p/w500/${movie['posterpath']}'),
+                                fit: BoxFit.fill)),
                       ),
                     ),
-                  )
-                ]),
-              );
+                    BackdropFilter(
+                      filter: ui.ImageFilter.blur(sigmaX: 50.0, sigmaY: 50.0),
+                    ),
+                    SingleChildScrollView(
+                      child: Container(
+                        margin: const EdgeInsets.all(20.0),
+                        child: Column(
+                          children: [
+                            Container(
+                                alignment: Alignment.center,
+                                child: Image(
+                                  image: NetworkImage(
+                                      'https://image.tmdb.org/t/p/w500/${movie['posterpath']}'),
+                                )),
+                            Container(
+                              margin: EdgeInsets.symmetric(
+                                  vertical: 20.0, horizontal: 50.0),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                          child: Text(
+                                        movie['title'],
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 30.0,
+                                            fontFamily: ''),
+                                      )),
+                                      Text(
+                                        '${movie['vote_average']}/10',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 20.0,
+                                            fontFamily: ''),
+                                      ),
+                                      SizedBox(
+                                        width: 15,
+                                      ),
+                                      FutureBuilder(
+                                          future: _database.isLiked(movie['id'],
+                                              "17030696@itcelaya.edu.mx"),
+                                          builder: (BuildContext context,
+                                              AsyncSnapshot<int> snapshot) {
+                                            if (snapshot.data == 0) {
+                                              return FloatingActionButton(
+                                                  backgroundColor: Colors.red,
+                                                  child: Icon(MdiIcons.heart
+                                                      //MdiIcons.heartBroken,
+                                                      ),
+                                                  onPressed: () {
+                                                    Liked obj = Liked();
+                                                    obj.idMovie = movie['id'];
+                                                    obj.mailusr =
+                                                        "17030696@itcelaya.edu.mx";
+                                                    _database.insert(
+                                                        'tbl_liked',
+                                                        obj.toJson());
+                                                    setState(() {});
+                                                  });
+                                            } else {
+                                              return FloatingActionButton(
+                                                  backgroundColor: Colors.red,
+                                                  child: Icon(
+                                                    //MdiIcons.heart
+                                                    MdiIcons.heartBroken,
+                                                  ),
+                                                  onPressed: () {
+                                                    _database.deleteLiked(
+                                                        'tbl_liked',
+                                                        "17030696@itcelaya.edu.mx",
+                                                        movie['id']);
+                                                    setState(() {});
+                                                  });
+                                            }
+                                          }),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      SizedBox(
+                                        height: 30,
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        'Description',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 25.0,
+                                            fontFamily: ''),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Flexible(
+                                        child: Text(
+                                          movie['overview'],
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20.0,
+                                              fontFamily: ''),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      SizedBox(
+                                        height: 30,
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        'Cast',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 25.0,
+                                            fontFamily: ''),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: SizedBox(
+                                          height: 200.0,
+                                          child: FutureBuilder(
+                                            future: apiCast.getCast(urlc),
+                                            builder: (BuildContext context,
+                                                AsyncSnapshot<List<Cast>>
+                                                    snapshot) {
+                                              if (snapshot.hasError) {
+                                                return Center(
+                                                  child: Text(
+                                                      "Has error in this request :c"),
+                                                );
+                                              } else if (snapshot
+                                                      .connectionState ==
+                                                  ConnectionState.done) {
+                                                return _listCast(snapshot.data);
+                                              } else {
+                                                return Center(
+                                                  child:
+                                                      CircularProgressIndicator(),
+                                                );
+                                              }
+                                            },
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    )
+                  ]),
+                );
+              }
             } else {
               return Center(
                 child: CircularProgressIndicator(),

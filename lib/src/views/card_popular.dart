@@ -50,7 +50,8 @@ class CardPopular extends StatelessWidget {
                             'posterpath': popular.posterPath,
                             'id': popular.id,
                             'vote_average': popular.voteAverage,
-                            'overview': popular.overview
+                            'overview': popular.overview,
+                            'img': popular.backdropPath
                           });
                         },
                         padding: EdgeInsets.symmetric(horizontal: 10.0),
