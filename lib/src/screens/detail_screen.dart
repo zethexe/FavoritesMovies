@@ -112,14 +112,14 @@ class _DetailScreenState extends State<DetailScreen> {
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontSize: 30.0,
-                                          fontFamily: 'Arvo'),
+                                          fontFamily: ''),
                                     )),
                                     Text(
                                       '${movie['vote_average']}/10',
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontSize: 20.0,
-                                          fontFamily: 'Arvo'),
+                                          fontFamily: ''),
                                     ),
                                     SizedBox(
                                       width: 15,
@@ -176,7 +176,7 @@ class _DetailScreenState extends State<DetailScreen> {
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontSize: 25.0,
-                                          fontFamily: 'Arvo'),
+                                          fontFamily: ''),
                                     ),
                                   ],
                                 ),
@@ -188,7 +188,7 @@ class _DetailScreenState extends State<DetailScreen> {
                                         style: TextStyle(
                                             color: Colors.white,
                                             fontSize: 20.0,
-                                            fontFamily: 'Arvo'),
+                                            fontFamily: ''),
                                       ),
                                     )
                                   ],
@@ -207,7 +207,7 @@ class _DetailScreenState extends State<DetailScreen> {
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontSize: 25.0,
-                                          fontFamily: 'Arvo'),
+                                          fontFamily: ''),
                                     ),
                                   ],
                                 ),
