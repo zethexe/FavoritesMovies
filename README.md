@@ -1,2 +1,2 @@
-# practica2
- Practica Peliculas Favoritas
+# Detalle de pelicula
+ 
